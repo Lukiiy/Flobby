@@ -1,0 +1,9 @@
+name: Flobby
+description: $description
+version: '${version}'
+
+main: me.lukiiy.flobby.Flobby
+api-version: '1.21.8'
+load: POSTWORLD
+
+authors: [ Lukiiy ]
