@@ -5,6 +5,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 
 public class Echo implements Listener {
@@ -25,5 +26,10 @@ public class Echo implements Listener {
     @EventHandler
     public void blockBreak(BlockBreakEvent e) {
         if (e.getBlock().getWorld() == Flobby.getInstance().getWorld() && !e.getPlayer().hasPermission(MODIFY_PERMISSION)) e.setCancelled(true);
+    }
+
+    @EventHandler
+    public void drop(PlayerDropItemEvent e) { // TODO: only deny lobby items, when I implement those...
+        if (e.getPlayer().getWorld() == Flobby.getInstance().getWorld() && !e.getPlayer().hasPermission(MODIFY_PERMISSION)) e.setCancelled(true);
     }
 }
