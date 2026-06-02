@@ -18,12 +18,12 @@ public class Echo implements Listener {
     }
 
     @EventHandler
-    public void blockBreak(BlockBreakEvent e) {
+    public void blockPlace(BlockPlaceEvent e) {
         if (e.getBlock().getWorld() == Flobby.getInstance().getWorld() && !e.getPlayer().hasPermission(MODIFY_PERMISSION)) e.setCancelled(true);
     }
 
     @EventHandler
-    public void blockBreak(BlockPlaceEvent e) {
+    public void blockBreak(BlockBreakEvent e) {
         if (e.getBlock().getWorld() == Flobby.getInstance().getWorld() && !e.getPlayer().hasPermission(MODIFY_PERMISSION)) e.setCancelled(true);
     }
 }
