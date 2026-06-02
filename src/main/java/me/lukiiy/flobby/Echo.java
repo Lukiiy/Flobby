@@ -1,17 +1,27 @@
 package me.lukiiy.flobby;
 
+import me.lukiiy.flow.FlowPlayer;
 import org.bukkit.Location;
+import org.bukkit.Particle;
+import org.bukkit.Sound;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.FoodLevelChangeEvent;
+import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerMoveEvent;
+
+import java.util.EnumSet;
 
 public class Echo implements Listener {
     private static final String MODIFY_PERMISSION = "flobby.modify";
+    private static final EnumSet<EntityDamageEvent.DamageCause> ALLOWED_CAUSES = EnumSet.of(EntityDamageEvent.DamageCause.CUSTOM, EntityDamageEvent.DamageCause.KILL, EntityDamageEvent.DamageCause.WORLD_BORDER);
 
     /**
      * The default check for most of the event handlers here!
@@ -48,5 +58,32 @@ public class Echo implements Listener {
         Player p = e.getPlayer();
 
         if (cantModify(p.getWorld(), p)) e.setCancelled(true);
+    }
+
+    @EventHandler
+    public void damage(EntityDamageEvent e) {
+        if (e.getEntity().getWorld() == Flobby.getInstance().getWorld() && !ALLOWED_CAUSES.contains(e.getCause())) e.setCancelled(true);
+    }
+
+    @EventHandler
+    public void hunger(FoodLevelChangeEvent e) {
+        if (e.getEntity().getWorld() != Flobby.getInstance().getWorld()) return;
+
+        e.setCancelled(false);
+    }
+
+    @EventHandler
+    public void move(PlayerMoveEvent e) {
+        Player p = e.getPlayer();
+
+        if (p.getWorld() != Flobby.getInstance().getWorld()) return;
+
+        if (!p.getGameMode().isInvulnerable() && e.getTo().y() <= Flobby.getInstance().getBoostY()) {
+            p.spawnParticle(Particle.GUST_EMITTER_SMALL, p.getLocation(), 1);
+            p.playSound(p.getLocation(), Sound.ENTITY_BREEZE_SHOOT, .75f, 0.75f);
+            p.setVelocity(p.getVelocity().setY(3.5));
+        }
+
+        if (p.getLocation().distance(Flobby.getInstance().getMain()) >= Flobby.getInstance().getCutOffRadius()) Flobby.getInstance().sendToLobby(new FlowPlayer(p));
     }
 }

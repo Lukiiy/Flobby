@@ -4,10 +4,7 @@ import me.lukiiy.flow.BaseLobby;
 import me.lukiiy.flow.Flow;
 import me.lukiiy.flow.FlowPlayer;
 import me.lukiiy.flow.component.BasePlayer;
-import org.bukkit.Bukkit;
-import org.bukkit.GameMode;
-import org.bukkit.Location;
-import org.bukkit.World;
+import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jspecify.annotations.NonNull;
@@ -64,6 +61,8 @@ public final class Flobby extends JavaPlugin implements BaseLobby {
     }
 
     public World getWorld() {
+        if (main == null) return null;
+
         return main.getWorld();
     }
 
@@ -100,6 +99,15 @@ public final class Flobby extends JavaPlugin implements BaseLobby {
         player.clearActiveItem();
         player.clearActivePotionEffects();
         player.getInventory().clear();
+    }
+
+    @Override
+    public void reset() {
+        if (getWorld() == null) return;
+
+        getWorld().setGameRule(GameRule.ANNOUNCE_ADVANCEMENTS, false);
+        getWorld().setGameRule(GameRule.DO_INSOMNIA, false);
+        getWorld().setGameRule(GameRule.SHOW_DEATH_MESSAGES, false);
     }
 
     // Utils
