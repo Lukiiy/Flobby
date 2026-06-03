@@ -1,5 +1,6 @@
 package me.lukiiy.flobby;
 
+import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
 import me.lukiiy.flow.BaseLobby;
 import me.lukiiy.flow.Flow;
 import me.lukiiy.flow.FlowPlayer;
@@ -21,6 +22,8 @@ public final class Flobby extends JavaPlugin implements BaseLobby {
 
         getServer().getPluginManager().registerEvents(new Echo(), this);
         Flow.getInstance().getManager().setLobby(this);
+
+        getLifecycleManager().registerEventHandler(LifecycleEvents.COMMANDS, it -> it.registrar().register(Cmd.register(), "Lobby management command"));
     }
 
     public static Flobby getInstance() {
@@ -83,8 +86,10 @@ public final class Flobby extends JavaPlugin implements BaseLobby {
     public void sendToLobby(@NonNull BasePlayer basePlayer) {
         if (!(basePlayer instanceof FlowPlayer fp)) return;
 
-        Player player = fp.getPlayer();
+        sendToLobby(fp.getPlayer());
+    }
 
+    public void sendToLobby(@NonNull Player player) {
         player.setHealth(20);
         player.setSaturation(20);
         player.setFoodLevel(20);
