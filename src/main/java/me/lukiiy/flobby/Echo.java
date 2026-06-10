@@ -10,9 +10,9 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
-import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
@@ -21,7 +21,9 @@ import java.util.EnumSet;
 
 public class Echo implements Listener {
     private static final String MODIFY_PERMISSION = "flobby.modify";
+
     private static final EnumSet<EntityDamageEvent.DamageCause> ALLOWED_CAUSES = EnumSet.of(EntityDamageEvent.DamageCause.CUSTOM, EntityDamageEvent.DamageCause.KILL, EntityDamageEvent.DamageCause.WORLD_BORDER);
+    private static final EnumSet<CreatureSpawnEvent.SpawnReason> ALLOWED_SPAWNREASON = EnumSet.of(CreatureSpawnEvent.SpawnReason.DISPENSE_EGG, CreatureSpawnEvent.SpawnReason.SPAWNER, CreatureSpawnEvent.SpawnReason.COMMAND, CreatureSpawnEvent.SpawnReason.TRIAL_SPAWNER);
 
     /**
      * The default check for most of the event handlers here!
@@ -85,5 +87,10 @@ public class Echo implements Listener {
         }
 
         if (p.getLocation().distance(Flobby.getInstance().getMain()) >= Flobby.getInstance().getCutOffRadius()) Flobby.getInstance().sendToLobby(new FlowPlayer(p));
+    }
+
+    @EventHandler
+    public void creatureSpawn(CreatureSpawnEvent e) {
+        if (e.getEntity().getWorld() == Flobby.getInstance().getWorld() && !ALLOWED_SPAWNREASON.contains(e.getSpawnReason())) e.setCancelled(true);
     }
 }
