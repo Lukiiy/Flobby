@@ -1,10 +1,8 @@
 package me.lukiiy.flobby;
 
-import me.lukiiy.flow.FlowPlayer;
-import org.bukkit.Location;
-import org.bukkit.Particle;
-import org.bukkit.Sound;
-import org.bukkit.World;
+import me.lukiiy.flow.*;
+import net.kyori.adventure.text.Component;
+import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -37,9 +35,21 @@ public class Echo implements Listener {
 
     @EventHandler
     public void join(PlayerJoinEvent e) {
-        Location loc = Flobby.getInstance().getMain();
+        Player player = e.getPlayer();
+        Minigame current = Flow.getInstance().getManager().getCurrent();
 
-        if (loc != null) e.getPlayer().teleport(loc);
+        if (current != null && current.isActive()) {
+            FlowPlayer fp = new FlowPlayer(player);
+
+            fp.setState(FlowPlayer.State.SPECTATING);
+            current.addPlayer(fp);
+
+            player.setGameMode(GameMode.SPECTATOR);
+            player.sendMessage(Component.text("A game is in progress!").color(FDefaults.GRAY).append(Component.text(" You've been added as a spectator.").color(FDefaults.WHITE)));
+            return;
+        }
+
+        Flobby.getInstance().sendToLobby(new FlowPlayer(player));
     }
 
     @EventHandler
