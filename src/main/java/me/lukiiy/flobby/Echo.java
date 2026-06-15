@@ -24,13 +24,18 @@ public class Echo implements Listener {
     private static final EnumSet<CreatureSpawnEvent.SpawnReason> ALLOWED_SPAWNREASON = EnumSet.of(CreatureSpawnEvent.SpawnReason.DISPENSE_EGG, CreatureSpawnEvent.SpawnReason.SPAWNER, CreatureSpawnEvent.SpawnReason.COMMAND, CreatureSpawnEvent.SpawnReason.TRIAL_SPAWNER);
 
     /**
-     * The default check for most of the event handlers here!
-     * @param world event world
+     * the can modify check
      * @param player the player who caused it
      * @return A true if they SHOUDN'T modify, false otherwise.
      */
-    private boolean cantModify(World world, Player player) {
-        return (world == Flobby.getInstance().getWorld() && !player.hasPermission(MODIFY_PERMISSION));
+    private boolean cantModify(Player player) {
+        if (!isLobby(player.getWorld())) return false;
+
+        return !(player.hasPermission(MODIFY_PERMISSION) && player.getGameMode() == GameMode.CREATIVE);
+    }
+
+    private boolean isLobby(World world) {
+        return world == Flobby.getInstance().getWorld();
     }
 
     @EventHandler
@@ -54,7 +59,7 @@ public class Echo implements Listener {
 
     @EventHandler
     public void blockPlace(BlockPlaceEvent e) {
-        if (cantModify(e.getBlock().getWorld(), e.getPlayer())) {
+        if (cantModify(e.getPlayer())) {
             e.setBuild(false);
             e.setCancelled(true);
         }
@@ -62,24 +67,24 @@ public class Echo implements Listener {
 
     @EventHandler
     public void blockBreak(BlockBreakEvent e) {
-        if (cantModify(e.getBlock().getWorld(), e.getPlayer())) e.setCancelled(true);
+        if (cantModify(e.getPlayer())) e.setCancelled(true);
     }
 
     @EventHandler
     public void drop(PlayerDropItemEvent e) { // TODO: only deny lobby items, when I implement those...
         Player p = e.getPlayer();
 
-        if (cantModify(p.getWorld(), p)) e.setCancelled(true);
+        if (cantModify(p)) e.setCancelled(true);
     }
 
     @EventHandler
     public void damage(EntityDamageEvent e) {
-        if (e.getEntity().getWorld() == Flobby.getInstance().getWorld() && !ALLOWED_CAUSES.contains(e.getCause())) e.setCancelled(true);
+        if (isLobby(e.getEntity().getWorld()) && !ALLOWED_CAUSES.contains(e.getCause())) e.setCancelled(true);
     }
 
     @EventHandler
     public void hunger(FoodLevelChangeEvent e) {
-        if (e.getEntity().getWorld() != Flobby.getInstance().getWorld()) return;
+        if (!isLobby(e.getEntity().getWorld())) return;
 
         e.setCancelled(true);
     }
@@ -88,7 +93,7 @@ public class Echo implements Listener {
     public void move(PlayerMoveEvent e) {
         Player p = e.getPlayer();
 
-        if (p.getWorld() != Flobby.getInstance().getWorld()) return;
+        if (!isLobby(p.getWorld())) return;
 
         if (!p.getGameMode().isInvulnerable() && e.getTo().y() <= Flobby.getInstance().getBoostY()) {
             p.spawnParticle(Particle.GUST_EMITTER_SMALL, p.getLocation(), 1);
@@ -101,6 +106,6 @@ public class Echo implements Listener {
 
     @EventHandler
     public void creatureSpawn(CreatureSpawnEvent e) {
-        if (e.getEntity().getWorld() == Flobby.getInstance().getWorld() && !ALLOWED_SPAWNREASON.contains(e.getSpawnReason())) e.setCancelled(true);
+        if (isLobby(e.getLocation().getWorld()) && !ALLOWED_SPAWNREASON.contains(e.getSpawnReason())) e.setCancelled(true);
     }
 }
