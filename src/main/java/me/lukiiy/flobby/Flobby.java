@@ -14,6 +14,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jspecify.annotations.NonNull;
 
+import java.util.Locale;
+
 public final class Flobby extends JavaPlugin implements BaseLobby {
     private Location main = null;
     private double boostY = -1;
@@ -136,20 +138,23 @@ public final class Flobby extends JavaPlugin implements BaseLobby {
         if (loc == null) return null;
 
         World world = loc.getWorld();
-        String worldName = world == null ? "" : world.getName();
 
-        return String.format("%s;%f;%f;%f;%f;%f", worldName, loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), loc.getPitch());
+        return String.format(Locale.US, "%s;%f;%f;%f;%f;%f", world == null ? "" : world.getName(), loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), loc.getPitch());
     }
 
     public static Location deserialize(String data) {
         if (data == null || data.isBlank()) return null;
 
-        String[] p = data.split(";", -1);
-        if (p.length != 6) return null; // incomplete/missing data
+        String[] parts = data.split(";", -1);
+        if (parts.length != 6) return null; // incomplete/missing data
 
-        World world = p[0].isEmpty() ? null : Bukkit.getWorld(p[0]);
-        if (!p[0].isEmpty() && world == null) return null; // unknown world
+        World world = parts[0].isEmpty() ? null : Bukkit.getWorld(parts[0]);
+        if (!parts[0].isEmpty() && world == null) return null; // unknown world
 
-        return new Location(world, Double.parseDouble(p[1]), Double.parseDouble(p[2]), Double.parseDouble(p[3]), Float.parseFloat(p[4]), Float.parseFloat(p[5]));
+        try {
+            return new Location(world, Double.parseDouble(parts[1]), Double.parseDouble(parts[2]), Double.parseDouble(parts[3]), Float.parseFloat(parts[4]), Float.parseFloat(parts[5]));
+        } catch (NumberFormatException e) {
+            return null;
+        }
     }
 }
