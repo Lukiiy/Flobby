@@ -119,7 +119,7 @@ public final class Flobby extends JavaPlugin implements BaseLobby {
         if (leader.getPlayer() == player) {
             if (getWorld() != player.getWorld()) player.sendMessage(Component.text("You're the leader!").color(FDefaults.GREEN));
 
-            player.getInventory().addItem(Item.getHostItem());
+            player.getInventory().addItem(Item.hostItem);
         }
     }
 
