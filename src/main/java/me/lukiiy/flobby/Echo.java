@@ -49,7 +49,7 @@ public class Echo implements Listener {
             return;
         }
 
-        Flobby.getInstance().sendToLobby(new FlowPlayer(player));
+        Flobby.getInstance().sendToLobby(player);
     }
 
     @EventHandler
@@ -81,7 +81,7 @@ public class Echo implements Listener {
     public void hunger(FoodLevelChangeEvent e) {
         if (e.getEntity().getWorld() != Flobby.getInstance().getWorld()) return;
 
-        e.setCancelled(false);
+        e.setCancelled(true);
     }
 
     @EventHandler
