@@ -4,6 +4,7 @@ import me.lukiiy.flow.*;
 import net.kyori.adventure.text.Component;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
@@ -12,6 +13,7 @@ import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 
@@ -107,5 +109,25 @@ public class Echo implements Listener {
     @EventHandler
     public void creatureSpawn(CreatureSpawnEvent e) {
         if (isLobby(e.getLocation().getWorld()) && !ALLOWED_SPAWNREASON.contains(e.getSpawnReason())) e.setCancelled(true);
+    }
+
+    @EventHandler
+    public void interaction(PlayerInteractEvent e) {
+        Player p = e.getPlayer();
+
+        if (e.hasItem() && e.getItem() != null) {
+            FlowPlayer fp = Flow.getInstance().getLeader();
+
+            if (e.getItem().isSimilar(Item.hostItem) && isLobby(p.getWorld()) && fp != null && fp.getPlayer() == p) {
+                e.setUseInteractedBlock(Event.Result.DENY);
+                e.setCancelled(true);
+
+                return;
+            }
+
+            if (cantModify(p)) e.setUseInteractedBlock(Event.Result.DENY);
+        }
+
+        if (e.hasBlock() && e.getClickedBlock() != null && cantModify(p)) e.setCancelled(true);
     }
 }
