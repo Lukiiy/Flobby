@@ -77,7 +77,6 @@ public final class Flobby extends JavaPlugin implements BaseLobby {
 
     // Config
     public void setupConfig() {
-        saveDefaultConfig();
         getConfig().options().copyDefaults(true);
         saveConfig();
     }
