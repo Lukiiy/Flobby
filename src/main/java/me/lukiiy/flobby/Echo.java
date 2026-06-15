@@ -71,10 +71,10 @@ public class Echo implements Listener {
     }
 
     @EventHandler
-    public void drop(PlayerDropItemEvent e) { // TODO: only deny lobby items, when I implement those...
+    public void drop(PlayerDropItemEvent e) {
         Player p = e.getPlayer();
 
-        if (cantModify(p)) e.setCancelled(true);
+        if (cantModify(p) || e.getItemDrop().getItemStack().getPersistentDataContainer().has(Item.KEY)) e.setCancelled(true);
     }
 
     @EventHandler

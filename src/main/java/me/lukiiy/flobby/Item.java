@@ -14,7 +14,7 @@ import org.bukkit.persistence.PersistentDataType;
 import java.util.function.Consumer;
 
 public class Item {
-    private static final NamespacedKey KEY = new NamespacedKey(Flobby.getInstance(), "item");
+    public static final NamespacedKey KEY = new NamespacedKey(Flobby.getInstance(), "item");
 
     public static final ItemStack hostItem = create(Material.PAPER, i -> {
         i.setData(DataComponentTypes.ITEM_MODEL, Key.key(Key.MINECRAFT_NAMESPACE, "clock"));
@@ -28,7 +28,7 @@ public class Item {
         ItemStack item = ItemStack.of(material);
 
         builder.accept(item);
-        item.editPersistentDataContainer(container -> container.set(KEY, PersistentDataType.BOOLEAN, true));
+        item.editPersistentDataContainer(c -> c.set(KEY, PersistentDataType.BOOLEAN, true));
 
         return item;
     }
