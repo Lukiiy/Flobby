@@ -2,9 +2,11 @@ package me.lukiiy.flobby;
 
 import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
 import me.lukiiy.flow.BaseLobby;
+import me.lukiiy.flow.FDefaults;
 import me.lukiiy.flow.Flow;
 import me.lukiiy.flow.FlowPlayer;
 import me.lukiiy.flow.component.BasePlayer;
+import net.kyori.adventure.text.Component;
 import org.bukkit.*;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
@@ -108,6 +110,16 @@ public final class Flobby extends JavaPlugin implements BaseLobby {
         player.clearActiveItem();
         player.clearActivePotionEffects();
         player.getInventory().clear();
+
+        FlowPlayer leader = Flow.getInstance().getLeader();
+
+        if (leader == null) leader = new FlowPlayer(player);
+
+        if (leader.getPlayer() == player) {
+            if (getWorld() != player.getWorld()) player.sendMessage(Component.text("You're the leader!").color(FDefaults.GREEN));
+
+            player.getInventory().addItem(Item.getHostItem());
+        }
     }
 
     @Override
