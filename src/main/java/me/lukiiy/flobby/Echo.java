@@ -122,6 +122,7 @@ public class Echo implements Listener {
                 e.setUseInteractedBlock(Event.Result.DENY);
                 e.setCancelled(true);
 
+                DialogMenu.INSTANCE.show(p);
                 return;
             }
 
