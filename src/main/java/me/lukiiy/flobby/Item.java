@@ -16,7 +16,7 @@ import java.util.function.Consumer;
 public class Item {
     public static final NamespacedKey KEY = new NamespacedKey(Flobby.getInstance(), "item");
 
-    public static final ItemStack hostItem = create(Material.PAPER, i -> {
+    public static final ItemStack HOST_ITEM = create(Material.PAPER, i -> {
         i.setData(DataComponentTypes.ITEM_MODEL, Key.key(Key.MINECRAFT_NAMESPACE, "clock"));
         i.setData(DataComponentTypes.MAX_STACK_SIZE, 1);
         i.setData(DataComponentTypes.ITEM_NAME, Component.text("Menu").color(FDefaults.YELLOW));

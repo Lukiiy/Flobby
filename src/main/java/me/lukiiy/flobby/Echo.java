@@ -118,7 +118,7 @@ public class Echo implements Listener {
         if (e.hasItem() && e.getItem() != null) {
             FlowPlayer fp = Flow.getInstance().getLeader();
 
-            if (e.getItem().isSimilar(Item.hostItem) && isLobby(p.getWorld()) && fp != null && fp.getPlayer() == p) {
+            if (e.getItem().isSimilar(Item.HOST_ITEM) && isLobby(p.getWorld()) && fp != null && fp.getPlayer() == p) {
                 e.setUseInteractedBlock(Event.Result.DENY);
                 e.setCancelled(true);
 
