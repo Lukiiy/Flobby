@@ -1,15 +1,10 @@
 package me.lukiiy.flobby;
 
 import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
-import me.lukiiy.flow.BaseLobby;
-import me.lukiiy.flow.FDefaults;
-import me.lukiiy.flow.Flow;
-import me.lukiiy.flow.FlowPlayer;
+import me.lukiiy.flow.*;
 import me.lukiiy.flow.component.BasePlayer;
 import net.kyori.adventure.text.Component;
 import org.bukkit.*;
-import org.bukkit.attribute.Attribute;
-import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jspecify.annotations.NonNull;
@@ -95,22 +90,7 @@ public final class Flobby extends JavaPlugin implements BaseLobby {
     }
 
     public void sendToLobby(@NonNull Player player) {
-        if (player.isDead()) player.spigot().respawn();
-
-        AttributeInstance hpMod = player.getAttribute(Attribute.MAX_HEALTH);
-        if (hpMod != null) player.setHealth(hpMod.getValue());
-
-        player.setGameMode(GameMode.ADVENTURE);
-        player.setSaturation(20);
-        player.setFoodLevel(20);
-        player.setFlying(false);
-        player.setFireTicks(0);
-        player.setExhaustion(0);
-        player.setExperienceLevelAndProgress(0);
-        player.clearTitle();
-        player.clearActiveItem();
-        player.clearActivePotionEffects();
-        player.getInventory().clear();
+        FUtils.softReset(player, GameMode.ADVENTURE);
 
         FlowPlayer leader = Flow.getInstance().getLeader();
 
