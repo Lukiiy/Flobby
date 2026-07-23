@@ -6,8 +6,6 @@ import net.kyori.adventure.key.Key;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
-import org.bukkit.enchantments.Enchantment;
-import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
 
@@ -20,8 +18,7 @@ public class Item {
         i.setData(DataComponentTypes.ITEM_MODEL, Key.key(Key.MINECRAFT_NAMESPACE, "clock"));
         i.setData(DataComponentTypes.MAX_STACK_SIZE, 1);
         i.setData(DataComponentTypes.ITEM_NAME, Component.text("Menu").color(FDefaults.YELLOW));
-        i.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-        i.addEnchantment(Enchantment.EFFICIENCY, 1);
+        i.setData(DataComponentTypes.ENCHANTMENT_GLINT_OVERRIDE, true);
     });
 
     private static ItemStack create(Material material, Consumer<ItemStack> builder) {
