@@ -7,3 +7,10 @@ api-version: '1.21.8'
 load: POSTWORLD
 
 authors: [ Lukiiy ]
+
+dependencies:
+  server:
+    Flow:
+      load: BEFORE
+      required: true
+      join-classpath: true
