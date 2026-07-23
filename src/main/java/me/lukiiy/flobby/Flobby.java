@@ -91,6 +91,7 @@ public final class Flobby extends JavaPlugin implements BaseLobby {
 
     public void sendToLobby(@NonNull Player player) {
         FUtils.softReset(player, GameMode.ADVENTURE);
+        player.teleport(Flobby.getInstance().main);
 
         FlowPlayer leader = Flow.getInstance().getLeader();
 
