@@ -7,14 +7,15 @@ import net.kyori.adventure.text.Component;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.jetbrains.annotations.Nullable;
 import org.jspecify.annotations.NonNull;
 
 import java.util.Locale;
 
 public final class Flobby extends JavaPlugin implements BaseLobby {
     private Location main = null;
-    private double boostY = -1;
-    private double cutOffRadius = -1;
+    private Double boostY = null;
+    private Double cutOffRadius = null;
 
     @Override
     public void onEnable() {
@@ -42,25 +43,25 @@ public final class Flobby extends JavaPlugin implements BaseLobby {
         return main;
     }
 
-    public void setBoostY(double boostY) {
+    public void setBoostY(@Nullable Double boostY) {
         this.boostY = boostY;
         getConfig().set("boostY", boostY);
 
         saveConfig();
     }
 
-    public double getBoostY() {
+    public @Nullable Double getBoostY() {
         return boostY;
     }
 
-    public void setCutOffRadius(double cutOffRadius) {
+    public void setCutOffRadius(@Nullable Double cutOffRadius) {
         this.cutOffRadius = cutOffRadius;
         getConfig().set("cutOffRadius", cutOffRadius);
 
         saveConfig();
     }
 
-    public double getCutOffRadius() {
+    public @Nullable Double getCutOffRadius() {
         return cutOffRadius;
     }
 
@@ -78,8 +79,8 @@ public final class Flobby extends JavaPlugin implements BaseLobby {
 
     public void reloadVars() {
         main = deserialize(getConfig().getString("pos", null));
-        boostY = getConfig().getDouble("boostY", -1);
-        cutOffRadius = getConfig().getDouble("cutOffRadius", -1);
+        boostY = Utils.loadDouble("boostY");
+        cutOffRadius = Utils.loadDouble("cutOffRadius");
     }
 
     @Override
