@@ -43,7 +43,7 @@ public class Echo implements Listener {
     @EventHandler
     public void join(PlayerJoinEvent e) {
         Player player = e.getPlayer();
-        Minigame current = Flow.getInstance().getManager().getCurrent();
+        Minigame current = Flow.getInstance().getManager().getCurrentRun();
 
         if (current != null && current.isActive()) {
             FlowPlayer fp = new FlowPlayer(player);
