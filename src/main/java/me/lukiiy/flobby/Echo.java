@@ -7,6 +7,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.CreatureSpawnEvent;
@@ -16,6 +17,7 @@ import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.inventory.EquipmentSlot;
 
 import java.util.EnumSet;
 
@@ -113,13 +115,17 @@ public class Echo implements Listener {
 
     @EventHandler
     public void interaction(PlayerInteractEvent e) {
+        if (e.getHand() != EquipmentSlot.HAND) return;
+
+        Action action = e.getAction();
+        boolean isRight = action == Action.RIGHT_CLICK_AIR || action == Action.RIGHT_CLICK_BLOCK;
+
         Player p = e.getPlayer();
 
-        if (e.hasItem() && e.getItem() != null) {
+        if (isRight && e.hasItem() && e.getItem() != null) {
             FlowPlayer fp = Flow.getInstance().getLeader();
 
             if (e.getItem().isSimilar(Item.HOST_ITEM) && isLobby(p.getWorld()) && fp != null && fp.getPlayer() == p) {
-                e.setUseInteractedBlock(Event.Result.DENY);
                 e.setCancelled(true);
 
                 DialogMenu.INSTANCE.show(p);
