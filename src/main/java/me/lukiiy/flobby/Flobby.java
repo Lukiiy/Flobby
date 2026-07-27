@@ -34,7 +34,7 @@ public final class Flobby extends JavaPlugin implements BaseLobby {
 
     public void setMain(Location main) {
         this.main = main;
-        getConfig().set("pos", serialize(main));
+        getConfig().set("pos", Utils.serialize(main));
 
         saveConfig();
     }
@@ -78,7 +78,7 @@ public final class Flobby extends JavaPlugin implements BaseLobby {
     }
 
     public void reloadVars() {
-        main = deserialize(getConfig().getString("pos", null));
+        main = Utils.deserialize(getConfig().getString("pos", null));
         boostY = Utils.loadDouble("boostY");
         cutOffRadius = Utils.loadDouble("cutOffRadius");
     }
