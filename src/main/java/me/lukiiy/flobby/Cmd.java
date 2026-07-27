@@ -33,6 +33,12 @@ public class Cmd {
             });
 
     private static final LiteralArgumentBuilder<CommandSourceStack> setBoostY = Commands.literal("setboosty")
+            .executes(it -> {
+                Flobby.getInstance().setBoostY(null);
+                it.getSource().getSender().sendMessage(FDefaults.success(Component.text("Disabled Void Booster!")));
+
+                return Command.SINGLE_SUCCESS;
+            })
             .then(Commands.argument("value", DoubleArgumentType.doubleArg())
                     .executes(it -> {
                         double value = DoubleArgumentType.getDouble(it, "value");
@@ -44,6 +50,12 @@ public class Cmd {
                     }));
 
     private static final LiteralArgumentBuilder<CommandSourceStack> setCutOffRadius = Commands.literal("setcutoffradius")
+            .executes(it -> {
+                Flobby.getInstance().setCutOffRadius(null);
+                it.getSource().getSender().sendMessage(FDefaults.success(Component.text("Disabled Cutoff Radius!")));
+
+                return Command.SINGLE_SUCCESS;
+            })
             .then(Commands.argument("value", DoubleArgumentType.doubleArg())
                     .executes(it -> {
                         double value = DoubleArgumentType.getDouble(it, "value");
