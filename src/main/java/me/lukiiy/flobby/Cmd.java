@@ -6,6 +6,8 @@ import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.tree.LiteralCommandNode;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
+import io.papermc.paper.command.brigadier.argument.ArgumentTypes;
+import io.papermc.paper.command.brigadier.argument.resolvers.selector.PlayerSelectorArgumentResolver;
 import me.lukiiy.flow.FDefaults;
 import net.kyori.adventure.text.Component;
 import org.bukkit.entity.Player;
@@ -52,7 +54,17 @@ public class Cmd {
                         return Command.SINGLE_SUCCESS;
                     }));
 
+    private static final LiteralArgumentBuilder<CommandSourceStack> transfer = Commands.literal("transfer")
+            .then(Commands.argument("player", ArgumentTypes.player())
+                    .executes(it -> {
+                        Player target = it.getArgument("player", PlayerSelectorArgumentResolver.class).resolve(it.getSource()).getFirst();
+
+                        Flobby.getInstance().setLeader(target);
+
+                        return Command.SINGLE_SUCCESS;
+                    }));
+
     public static LiteralCommandNode<CommandSourceStack> register() {
-        return main.then(setPos).then(setBoostY).then(setCutOffRadius).build();
+        return main.then(setPos).then(setBoostY).then(setCutOffRadius).then(transfer).build();
     }
 }
