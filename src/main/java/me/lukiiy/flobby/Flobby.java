@@ -1,6 +1,8 @@
 package me.lukiiy.flobby;
 
 import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
+import me.lukiiy.flobby.cmd.Main;
+import me.lukiiy.flobby.cmd.Leadership;
 import me.lukiiy.flow.*;
 import me.lukiiy.flow.component.BasePlayer;
 import net.kyori.adventure.text.Component;
@@ -29,7 +31,10 @@ public final class Flobby extends JavaPlugin implements BaseLobby {
         getServer().getPluginManager().registerEvents(new Echo(), this);
         Flow.getInstance().getManager().setLobby(this);
 
-        getLifecycleManager().registerEventHandler(LifecycleEvents.COMMANDS, it -> it.registrar().register(Cmd.register(), "Lobby management command"));
+        getLifecycleManager().registerEventHandler(LifecycleEvents.COMMANDS, it -> {
+            it.registrar().register(Main.register(), "Lobby management command");
+            it.registrar().register(Leadership.register(), "Leadership management command");
+        });
     }
 
     public static Flobby getInstance() {

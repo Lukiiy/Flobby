@@ -1,4 +1,4 @@
-package me.lukiiy.flobby;
+package me.lukiiy.flobby.cmd;
 
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.arguments.DoubleArgumentType;
@@ -8,11 +8,12 @@ import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
 import io.papermc.paper.command.brigadier.argument.ArgumentTypes;
 import io.papermc.paper.command.brigadier.argument.resolvers.selector.PlayerSelectorArgumentResolver;
+import me.lukiiy.flobby.Flobby;
 import me.lukiiy.flow.FDefaults;
 import net.kyori.adventure.text.Component;
 import org.bukkit.entity.Player;
 
-public class Cmd {
+public class Main {
     private static final LiteralArgumentBuilder<CommandSourceStack> main = Commands.literal("lobby")
             .executes(it -> {
                 if (!(it.getSource().getSender() instanceof Player player)) throw FDefaults.NON_PLAYER;
