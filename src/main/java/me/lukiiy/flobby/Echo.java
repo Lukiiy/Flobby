@@ -43,7 +43,6 @@ public class Echo implements Listener {
         Player player = e.getPlayer();
 
         e.joinMessage(Component.empty().append(Component.text("+").color(FDefaults.LIME)).appendSpace().append(player.displayName()));
-
         Flobby.getInstance().sendToLobby(player);
 
         Minigame current = Flow.getInstance().getManager().getCurrentRun();
@@ -57,6 +56,8 @@ public class Echo implements Listener {
             player.setGameMode(GameMode.SPECTATOR);
             player.sendMessage(Component.text("A game is in progress!").color(FDefaults.GRAY).append(Component.text(" You've been added as a spectator.").color(FDefaults.WHITE)));
         }
+
+        player.sendPlayerListHeaderAndFooter(Component.newline().append(Component.text("Project Flow").color(FDefaults.WHITE)).appendNewline(), Component.space());
     }
 
     @EventHandler
