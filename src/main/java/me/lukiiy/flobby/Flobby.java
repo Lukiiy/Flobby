@@ -19,6 +19,8 @@ public final class Flobby extends JavaPlugin implements BaseLobby {
     private Double boostY = null;
     private Double cutOffRadius = null;
 
+    public static final Component LEADER_PREFIX = Component.text("⭐").color(FDefaults.LIGHT_YELLOW);
+
     @Override
     public void onEnable() {
         setupConfig();
@@ -102,14 +104,18 @@ public final class Flobby extends JavaPlugin implements BaseLobby {
     }
 
     public void setLeader(@NonNull Player player) {
-        Flow.getInstance().setLeader(new FlowPlayer(player));
+        FlowPlayer old = Flow.getInstance().getLeader();
+        if (old != null) {
+            old.getPlayer().playerListName(old.getPlayer().displayName());
+            Bukkit.broadcast(Component.empty().append(LEADER_PREFIX).append(Component.text(" Leadership has been transferred to ").color(FDefaults.LIME)).append(player.displayName().color(FDefaults.LIGHT_YELLOW)));
+        }
 
-        Bukkit.broadcast(Component.empty().append(Component.text("⭐ Leadership has been transfered to ").color(FDefaults.LIME)).append(player.displayName()));
+        Flow.getInstance().setLeader(new FlowPlayer(player));
         player.sendMessage(Component.text("You're the leader!").color(FDefaults.GREEN));
 
         if (player.getWorld() == getWorld()) player.getInventory().addItem(Item.HOST_ITEM);
 
-        player.playerListName(Component.empty().append(Component.text("⭐").color(FDefaults.LIGHT_YELLOW)).appendSpace().append(player.displayName()));
+        player.playerListName(Component.empty().append(LEADER_PREFIX).appendSpace().append(player.displayName()));
     }
 
     public void setLeaderRandom() {
