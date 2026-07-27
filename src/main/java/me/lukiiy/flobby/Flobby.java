@@ -10,7 +10,9 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.Nullable;
 import org.jspecify.annotations.NonNull;
 
-import java.util.Locale;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 
 public final class Flobby extends JavaPlugin implements BaseLobby {
     private Location main = null;
@@ -96,13 +98,28 @@ public final class Flobby extends JavaPlugin implements BaseLobby {
 
         FlowPlayer leader = Flow.getInstance().getLeader();
 
-        if (leader == null) leader = new FlowPlayer(player);
+        if (leader == null || !leader.getPlayer().isOnline()) setLeader(player);
+    }
 
-        if (leader.getPlayer() == player) {
-            if (getWorld() != player.getWorld()) player.sendMessage(Component.text("You're the leader!").color(FDefaults.GREEN));
+    public void setLeader(@NonNull Player player) {
+        Flow.getInstance().setLeader(new FlowPlayer(player));
 
-            player.getInventory().addItem(Item.HOST_ITEM);
-        }
+        Bukkit.broadcast(Component.empty().append(Component.text("⭐ Leadership has been transfered to ").color(FDefaults.LIME)).append(player.displayName()));
+        player.sendMessage(Component.text("You're the leader!").color(FDefaults.GREEN));
+
+        if (player.getWorld() == getWorld()) player.getInventory().addItem(Item.HOST_ITEM);
+
+        player.playerListName(Component.empty().append(Component.text("⭐").color(FDefaults.LIGHT_YELLOW)).appendSpace().append(player.displayName()));
+    }
+
+    public void setLeaderRandom() {
+        List<Player> remaining = new ArrayList<>(Bukkit.getOnlinePlayers());
+        if (remaining.isEmpty()) return;
+
+        FlowPlayer leader = Flow.getInstance().getLeader();
+        if (leader != null) remaining.remove(leader.getPlayer());
+
+        setLeader(remaining.get(ThreadLocalRandom.current().nextInt(remaining.size())));
     }
 
     @Override

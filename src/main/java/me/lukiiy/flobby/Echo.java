@@ -4,7 +4,6 @@ import me.lukiiy.flow.*;
 import net.kyori.adventure.text.Component;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
-import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
@@ -13,10 +12,7 @@ import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
-import org.bukkit.event.player.PlayerDropItemEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.event.player.*;
 import org.bukkit.inventory.EquipmentSlot;
 
 import java.util.EnumSet;
@@ -48,6 +44,8 @@ public class Echo implements Listener {
 
         e.joinMessage(Component.empty().append(Component.text("+").color(FDefaults.LIME)).appendSpace().append(player.displayName()));
 
+        Flobby.getInstance().sendToLobby(player);
+
         Minigame current = Flow.getInstance().getManager().getCurrentRun();
 
         if (current != null && current.isActive()) {
@@ -58,7 +56,6 @@ public class Echo implements Listener {
 
             player.setGameMode(GameMode.SPECTATOR);
             player.sendMessage(Component.text("A game is in progress!").color(FDefaults.GRAY).append(Component.text(" You've been added as a spectator.").color(FDefaults.WHITE)));
-            return;
         }
     }
 
@@ -67,6 +64,10 @@ public class Echo implements Listener {
         Player player = e.getPlayer();
 
         e.quitMessage(Component.empty().append(Component.text("-").color(FDefaults.RED)).appendSpace().append(player.displayName()));
+
+        FlowPlayer leader = Flow.getInstance().getLeader();
+
+        if (leader != null && leader.getPlayer().equals(player)) Flobby.getInstance().setLeaderRandom();
     }
 
     @EventHandler
@@ -107,13 +108,16 @@ public class Echo implements Listener {
 
         if (!isLobby(p.getWorld())) return;
 
-        if (!p.getGameMode().isInvulnerable() && e.getTo().y() <= Flobby.getInstance().getBoostY()) {
+        Double boostY = Flobby.getInstance().getBoostY();
+        Double cutOff = Flobby.getInstance().getCutOffRadius();
+
+        if (boostY != null && !p.getGameMode().isInvulnerable() && e.getTo().y() <= boostY) {
             p.spawnParticle(Particle.GUST_EMITTER_SMALL, p.getLocation(), 1);
             p.playSound(p.getLocation(), Sound.ENTITY_BREEZE_SHOOT, .75f, 0.75f);
             p.setVelocity(p.getVelocity().setY(3.5));
         }
 
-        if (p.getLocation().distance(Flobby.getInstance().getMain()) >= Flobby.getInstance().getCutOffRadius()) Flobby.getInstance().sendToLobby(new FlowPlayer(p));
+        if (cutOff != null && p.getLocation().distance(Flobby.getInstance().getMain()) >= cutOff) Flobby.getInstance().sendToLobby(new FlowPlayer(p));
     }
 
     @EventHandler
@@ -130,17 +134,15 @@ public class Echo implements Listener {
 
         Player p = e.getPlayer();
 
-        if (isRight && e.hasItem() && e.getItem() != null) {
-            FlowPlayer fp = Flow.getInstance().getLeader();
+        if (isRight && e.hasItem() && e.getItem() != null && e.getItem().isSimilar(Item.HOST_ITEM)) {
+            FlowPlayer leader = Flow.getInstance().getLeader();
 
-            if (e.getItem().isSimilar(Item.HOST_ITEM) && isLobby(p.getWorld()) && fp != null && fp.getPlayer() == p) {
+            if (leader != null && leader.getUuid().equals(p.getUniqueId())) {
                 e.setCancelled(true);
 
                 DialogMenu.INSTANCE.show(p);
                 return;
             }
-
-            if (cantModify(p)) e.setUseInteractedBlock(Event.Result.DENY);
         }
 
         if (e.hasBlock() && e.getClickedBlock() != null && cantModify(p)) e.setCancelled(true);
