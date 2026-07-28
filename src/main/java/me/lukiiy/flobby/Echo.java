@@ -68,7 +68,7 @@ public class Echo implements Listener {
 
         FlowPlayer leader = Flow.getInstance().getLeader();
 
-        if (leader != null && leader.getPlayer().equals(player)) Flobby.getInstance().setLeaderRandom();
+        if (leader != null && leader.getPlayer().equals(player) && !Bukkit.getOnlinePlayers().isEmpty()) Flobby.getInstance().setLeaderRandom();
     }
 
     @EventHandler
