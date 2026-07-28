@@ -128,8 +128,11 @@ public final class Flobby extends JavaPlugin implements BaseLobby {
     public void setLeader(@NonNull Player player) {
         FlowPlayer old = Flow.getInstance().getLeader();
         if (old != null) {
-            old.getPlayer().playerListName(old.getPlayer().displayName());
+            Player oldP = old.getPlayer();
+
+            oldP.playerListName(oldP.displayName());
             Bukkit.broadcast(Component.empty().append(LEADER_PREFIX).append(Component.text(" Leadership has been transferred to ").color(FDefaults.LIME)).append(player.displayName().color(FDefaults.LIGHT_YELLOW)));
+            oldP.getInventory().remove(Item.HOST_ITEM);
         }
 
         Flow.getInstance().setLeader(new FlowPlayer(player));

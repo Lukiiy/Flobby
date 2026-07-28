@@ -25,12 +25,12 @@ public class Leadership {
                 Player leaderP = leader.getPlayer();
 
                 if (it.getSource().getSender() == leaderP) {
-                    sender.sendMessage(Component.empty().append(Flobby.LEADER_PREFIX).append(Component.text("Specify a player to transfer leadership!").color(FDefaults.ORANGE)));
+                    sender.sendMessage(Component.empty().append(Flobby.LEADER_PREFIX).append(Component.text(" Specify a player to transfer leadership!").color(FDefaults.ORANGE)));
 
                     return Command.SINGLE_SUCCESS;
                 }
 
-                sender.sendMessage(Component.empty().append(Flobby.LEADER_PREFIX).append(Component.text("The leader is ").append(leaderP.displayName())));
+                sender.sendMessage(Component.empty().append(Flobby.LEADER_PREFIX).append(Component.text(" The leader is ").append(leaderP.displayName())));
 
                 return Command.SINGLE_SUCCESS;
             })
