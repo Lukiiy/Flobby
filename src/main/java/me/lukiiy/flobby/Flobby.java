@@ -20,6 +20,7 @@ public final class Flobby extends JavaPlugin implements BaseLobby {
     private Location main = null;
     private Double boostY = null;
     private Double cutOffRadius = null;
+    private double boostYForce;
 
     public static final Component LEADER_PREFIX = Component.text("⭐").color(FDefaults.LIGHT_YELLOW);
 
@@ -74,6 +75,17 @@ public final class Flobby extends JavaPlugin implements BaseLobby {
         return cutOffRadius;
     }
 
+    public void setBoostYForce(double force) {
+        this.boostYForce = force;
+        getConfig().set("boostYForce", force);
+
+        saveConfig();
+    }
+
+    public double getBoostYForce() {
+        return boostYForce;
+    }
+
     public World getWorld() {
         if (main == null) return null;
 
@@ -90,6 +102,7 @@ public final class Flobby extends JavaPlugin implements BaseLobby {
         main = Utils.deserialize(getConfig().getString("pos", null));
         boostY = Utils.loadDouble("boostY");
         cutOffRadius = Utils.loadDouble("cutOffRadius");
+        boostYForce = getConfig().getDouble("boostYForce", 0);
     }
 
     @Override

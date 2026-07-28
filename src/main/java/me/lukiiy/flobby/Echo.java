@@ -115,7 +115,7 @@ public class Echo implements Listener {
         if (boostY != null && !p.getGameMode().isInvulnerable() && e.getTo().y() <= boostY) {
             p.spawnParticle(Particle.GUST_EMITTER_SMALL, p.getLocation(), 1);
             p.playSound(p.getLocation(), Sound.ENTITY_BREEZE_SHOOT, .75f, 0.75f);
-            p.setVelocity(p.getVelocity().setY(3.5));
+            p.setVelocity(p.getVelocity().setY(Flobby.getInstance().getBoostYForce()));
         }
 
         if (cutOff != null && p.getLocation().distance(Flobby.getInstance().getMain()) >= cutOff) Flobby.getInstance().sendToLobby(new FlowPlayer(p));
