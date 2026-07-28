@@ -142,6 +142,7 @@ public class Echo implements Listener {
                 e.setCancelled(true);
 
                 DialogMenu.INSTANCE.show(p);
+                p.swingHand(e.getHand());
                 return;
             }
         }
