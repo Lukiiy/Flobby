@@ -105,7 +105,11 @@ public final class Flobby extends JavaPlugin implements BaseLobby {
 
         FlowPlayer leader = Flow.getInstance().getLeader();
 
-        if (leader == null || !leader.getPlayer().isOnline()) setLeader(player);
+        if (leader == null) {
+            setLeader(player);
+        } else if (leader.getPlayer() == player) {
+            player.getInventory().addItem(Item.HOST_ITEM);
+        }
     }
 
     public void setLeader(@NonNull Player player) {
