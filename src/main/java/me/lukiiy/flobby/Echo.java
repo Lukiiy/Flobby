@@ -57,7 +57,9 @@ public class Echo implements Listener {
             player.sendMessage(Component.text("A game is in progress!").color(FDefaults.GRAY).append(Component.text(" You've been added as a spectator.").color(FDefaults.WHITE)));
         }
 
-        player.sendPlayerListHeaderAndFooter(Component.newline().append(Component.text("Project Flow").color(FDefaults.WHITE)).appendNewline(), Component.space());
+        Component edgeDot = Component.text("◆").color(FDefaults.WHITE);
+
+        player.sendPlayerListHeaderAndFooter(Component.newline().append(edgeDot).appendSpace().append(FUtils.gradient(FUtils.asMini("ᴘʀᴏᴊᴇᴄᴛ ꜰʟᴏᴡ"), FDefaults.WHITE, FDefaults.PURPLE)).appendSpace().append(edgeDot).appendNewline(), Component.space());
     }
 
     @EventHandler
@@ -68,7 +70,9 @@ public class Echo implements Listener {
 
         FlowPlayer leader = Flow.getInstance().getLeader();
 
-        if (leader != null && leader.getPlayer().equals(player) && !Bukkit.getOnlinePlayers().isEmpty()) Flobby.getInstance().setLeaderRandom();
+        if (leader != null && player.equals(leader.getPlayer())) { // leader leaving
+            if (Bukkit.getOnlinePlayers().size() - 1 > 0) Flobby.getInstance().setLeaderRandom(); else Flobby.getInstance().setLeader(null);
+        }
     }
 
     @EventHandler
