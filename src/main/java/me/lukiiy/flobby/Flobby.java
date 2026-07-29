@@ -125,7 +125,12 @@ public final class Flobby extends JavaPlugin implements BaseLobby {
         }
     }
 
-    public void setLeader(@NonNull Player player) {
+    public void setLeader(@Nullable Player player) {
+        if (player == null) {
+            Flow.getInstance().setLeader(null);
+            return;
+        }
+
         FlowPlayer old = Flow.getInstance().getLeader();
         if (old != null) {
             Player oldP = old.getPlayer();
