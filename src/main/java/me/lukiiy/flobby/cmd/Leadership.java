@@ -30,7 +30,7 @@ public class Leadership {
                     return Command.SINGLE_SUCCESS;
                 }
 
-                sender.sendMessage(Component.empty().append(Flobby.LEADER_PREFIX).append(Component.text(" The leader is ").append(leaderP.displayName())));
+                sender.sendMessage(Component.empty().append(Flobby.LEADER_PREFIX).append(Component.text(" The leader is ").color(FDefaults.GREEN).append(leaderP.displayName())));
 
                 return Command.SINGLE_SUCCESS;
             })
