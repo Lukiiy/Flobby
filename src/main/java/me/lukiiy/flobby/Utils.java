@@ -17,8 +17,8 @@ public class Utils {
                 return null;
             }
 
-            case Number number -> { // A number!
-                double val = number.doubleValue();
+            case Number num -> { // A number!
+                double val = num.doubleValue();
                 config.set(path, val);
 
                 return val;
