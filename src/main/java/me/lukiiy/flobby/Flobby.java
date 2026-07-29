@@ -3,6 +3,7 @@ package me.lukiiy.flobby;
 import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
 import me.lukiiy.flobby.cmd.Main;
 import me.lukiiy.flobby.cmd.Leadership;
+import me.lukiiy.flobby.cmd.MenuCUI;
 import me.lukiiy.flow.*;
 import me.lukiiy.flow.component.BasePlayer;
 import net.kyori.adventure.text.Component;
@@ -35,6 +36,7 @@ public final class Flobby extends JavaPlugin implements BaseLobby {
         getLifecycleManager().registerEventHandler(LifecycleEvents.COMMANDS, it -> {
             it.registrar().register(Main.register(), "Lobby management command");
             it.registrar().register(Leadership.register(), "Leadership management command");
+            it.registrar().register(MenuCUI.register(), "Alternate implementation of the main Game Manager, via chat.");
         });
     }
 
