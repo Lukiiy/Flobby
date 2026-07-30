@@ -3,7 +3,6 @@ package me.lukiiy.flobby;
 import me.lukiiy.flobby.cmd.MenuCUI;
 import me.lukiiy.flow.*;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.ShadowColor;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -61,7 +60,7 @@ public class Echo implements Listener {
 
         Component edgeDot = Component.text("◆").color(FDefaults.WHITE);
 
-        player.sendPlayerListHeaderAndFooter(Component.newline().append(edgeDot).appendSpace().append(FUtils.gradient(FUtils.asMini("ᴘʀᴏᴊᴇᴄᴛ ꜰʟᴏᴡ"), FDefaults.WHITE, FDefaults.PURPLE)).appendSpace().append(edgeDot).appendNewline(), Component.space());
+        player.sendPlayerListHeaderAndFooter(Component.newline().append(edgeDot).appendSpace().append(Component.text("ᴘʀᴏᴊᴇᴄᴛ ꜰʟᴏᴡ").color(FDefaults.PURPLE)).appendSpace().append(edgeDot).appendNewline(), Component.space());
     }
 
     @EventHandler
