@@ -155,6 +155,10 @@ public class MenuCUI {
                 ).build();
     }
 
+    public static void show(Player player) {
+        home(player);
+    }
+
     private static void home(Player player) {
         var manager = Flow.getInstance().getManager();
         var current = manager.getCurrent();

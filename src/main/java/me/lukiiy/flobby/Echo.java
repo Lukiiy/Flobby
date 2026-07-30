@@ -1,7 +1,9 @@
 package me.lukiiy.flobby;
 
+import me.lukiiy.flobby.cmd.MenuCUI;
 import me.lukiiy.flow.*;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.ShadowColor;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -145,7 +147,9 @@ public class Echo implements Listener {
             if (leader != null && leader.getUuid().equals(p.getUniqueId())) {
                 e.setCancelled(true);
 
-                DialogMenu.INSTANCE.show(p);
+                int protocol = Utils.getProtocolVersion(p);
+                if (protocol != -1 && protocol < 771) MenuCUI.show(p); else DialogMenu.INSTANCE.show(p);
+
                 p.swingHand(e.getHand());
                 return;
             }

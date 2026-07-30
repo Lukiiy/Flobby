@@ -1,9 +1,11 @@
 package me.lukiiy.flobby;
 
+import com.viaversion.viaversion.api.Via;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.entity.Player;
 
 import java.util.Locale;
 
@@ -61,5 +63,11 @@ public class Utils {
         } catch (NumberFormatException e) {
             return null;
         }
+    }
+
+    public static int getProtocolVersion(Player player) {
+        if (Bukkit.getPluginManager().getPlugin("ViaVersion") == null) return -1;
+
+        return Via.getAPI().getPlayerVersion(player.getUniqueId());
     }
 }
