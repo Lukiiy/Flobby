@@ -37,7 +37,14 @@ public class Leadership {
             .then(Commands.argument("player", ArgumentTypes.player())
                     .requires(it -> it.getSender().hasPermission("flow.host") || Flow.getInstance().getLeader() != null && Flow.getInstance().getLeader().getPlayer() == it.getSender())
                     .executes(it -> {
+                        CommandSender sender = it.getSource().getSender();
                         Player target = it.getArgument("player", PlayerSelectorArgumentResolver.class).resolve(it.getSource()).getFirst();
+
+                        if (sender == target) {
+                            sender.sendMessage(Component.empty().append(Flobby.LEADER_PREFIX).append(Component.text(" This player is already the leader!").color(FDefaults.ORANGE)));
+
+                            return Command.SINGLE_SUCCESS;
+                        }
 
                         Flobby.getInstance().setLeader(target);
 
