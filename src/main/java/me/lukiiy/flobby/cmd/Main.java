@@ -22,6 +22,7 @@ public class Main {
             });
 
     private static final LiteralArgumentBuilder<CommandSourceStack> setPos = Commands.literal("setpos")
+            .requires(it -> it.getSender().hasPermission("flobby.modify"))
             .executes(it -> {
                 if (!(it.getSource().getSender() instanceof Player player)) throw FDefaults.NON_PLAYER;
 
@@ -32,6 +33,7 @@ public class Main {
             });
 
     private static final LiteralArgumentBuilder<CommandSourceStack> setBoostY = Commands.literal("setboosty")
+            .requires(it -> it.getSender().hasPermission("flobby.modify"))
             .executes(it -> {
                 Flobby.getInstance().setBoostY(null);
                 it.getSource().getSender().sendMessage(FDefaults.success(Component.text("Disabled Void Booster!")));
@@ -49,6 +51,7 @@ public class Main {
                     }));
 
     private static final LiteralArgumentBuilder<CommandSourceStack> setCutOffRadius = Commands.literal("setcutoffradius")
+            .requires(it -> it.getSender().hasPermission("flobby.modify"))
             .executes(it -> {
                 Flobby.getInstance().setCutOffRadius(null);
                 it.getSource().getSender().sendMessage(FDefaults.success(Component.text("Disabled Cutoff Radius!")));
@@ -66,6 +69,7 @@ public class Main {
                     }));
 
     private static final LiteralArgumentBuilder<CommandSourceStack> setBoostYForce = Commands.literal("setboostyforce")
+            .requires(it -> it.getSender().hasPermission("flobby.modify"))
             .then(Commands.argument("value", DoubleArgumentType.doubleArg())
                     .executes(it -> {
                         double value = DoubleArgumentType.getDouble(it, "value");
@@ -77,6 +81,7 @@ public class Main {
                     }));
 
     private static final LiteralArgumentBuilder<CommandSourceStack> reload = Commands.literal("reload")
+            .requires(it -> it.getSender().hasPermission("flow.admin"))
             .executes(it -> {
                 Flobby.getInstance().reloadConfig();
                 Flobby.getInstance().reloadVars();
