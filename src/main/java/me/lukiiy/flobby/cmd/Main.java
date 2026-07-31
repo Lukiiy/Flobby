@@ -76,7 +76,17 @@ public class Main {
                         return Command.SINGLE_SUCCESS;
                     }));
 
+    private static final LiteralArgumentBuilder<CommandSourceStack> reload = Commands.literal("reload")
+            .executes(it -> {
+                Flobby.getInstance().reloadConfig();
+                Flobby.getInstance().reloadVars();
+
+                it.getSource().getSender().sendMessage(FDefaults.success(Component.text("Reloading Lobby config!")));
+
+                return Command.SINGLE_SUCCESS;
+            });
+
     public static LiteralCommandNode<CommandSourceStack> register() {
-        return main.then(setPos).then(setBoostY).then(setCutOffRadius).then(setBoostYForce).build();
+        return main.then(setPos).then(setBoostY).then(setCutOffRadius).then(setBoostYForce).then(reload).build();
     }
 }
