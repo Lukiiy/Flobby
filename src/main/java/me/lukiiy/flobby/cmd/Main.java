@@ -6,8 +6,6 @@ import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.tree.LiteralCommandNode;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
-import io.papermc.paper.command.brigadier.argument.ArgumentTypes;
-import io.papermc.paper.command.brigadier.argument.resolvers.selector.PlayerSelectorArgumentResolver;
 import me.lukiiy.flobby.Flobby;
 import me.lukiiy.flow.FDefaults;
 import net.kyori.adventure.text.Component;
@@ -67,17 +65,18 @@ public class Main {
                         return Command.SINGLE_SUCCESS;
                     }));
 
-    private static final LiteralArgumentBuilder<CommandSourceStack> transfer = Commands.literal("transfer")
-            .then(Commands.argument("player", ArgumentTypes.player())
+    private static final LiteralArgumentBuilder<CommandSourceStack> setBoostYForce = Commands.literal("setboostyforce")
+            .then(Commands.argument("value", DoubleArgumentType.doubleArg())
                     .executes(it -> {
-                        Player target = it.getArgument("player", PlayerSelectorArgumentResolver.class).resolve(it.getSource()).getFirst();
+                        double value = DoubleArgumentType.getDouble(it, "value");
 
-                        Flobby.getInstance().setLeader(target);
+                        Flobby.getInstance().setBoostYForce(value);
+                        it.getSource().getSender().sendMessage(FDefaults.success(Component.text("Booster Y Force set to " + value)));
 
                         return Command.SINGLE_SUCCESS;
                     }));
 
     public static LiteralCommandNode<CommandSourceStack> register() {
-        return main.then(setPos).then(setBoostY).then(setCutOffRadius).then(transfer).build();
+        return main.then(setPos).then(setBoostY).then(setCutOffRadius).then(setBoostYForce).build();
     }
 }
