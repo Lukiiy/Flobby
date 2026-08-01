@@ -40,7 +40,7 @@ public class Leadership {
                         CommandSender sender = it.getSource().getSender();
                         Player target = it.getArgument("player", PlayerSelectorArgumentResolver.class).resolve(it.getSource()).getFirst();
 
-                        if (sender == target) {
+                        if (Flow.getInstance().getLeader() != null && Flow.getInstance().getLeader().getPlayer() == target) {
                             sender.sendMessage(Component.empty().append(Flobby.LEADER_PREFIX).append(Component.text(" This player is already the leader!").color(FDefaults.ORANGE)));
 
                             return Command.SINGLE_SUCCESS;
