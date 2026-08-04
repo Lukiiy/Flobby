@@ -23,6 +23,9 @@ public final class Flobby extends JavaPlugin implements BaseLobby {
     private Double cutOffRadius = null;
     private double boostYForce;
 
+    public String motd = null;
+    public String motdIngame = null;
+
     public static final Component LEADER_PREFIX = Component.text("⭐").color(FDefaults.LIGHT_YELLOW);
 
     @Override
@@ -105,6 +108,8 @@ public final class Flobby extends JavaPlugin implements BaseLobby {
         boostY = Utils.loadDouble("boostY");
         cutOffRadius = Utils.loadDouble("cutOffRadius");
         boostYForce = getConfig().getDouble("boostYForce", 0);
+        motd = getConfig().getString("motd", "");
+        motdIngame = getConfig().getString("motdIngame", "");
     }
 
     @Override

@@ -1,5 +1,6 @@
 package me.lukiiy.flobby;
 
+import com.destroystokyo.paper.event.server.PaperServerListPingEvent;
 import me.lukiiy.flobby.cmd.MenuCUI;
 import me.lukiiy.flow.*;
 import net.kyori.adventure.text.Component;
@@ -61,6 +62,8 @@ public class Echo implements Listener {
         Component edgeDot = Component.text("◆").color(FDefaults.WHITE);
 
         player.sendPlayerListHeaderAndFooter(Component.newline().append(edgeDot).appendSpace().append(Component.text("ᴘʀᴏᴊᴇᴄᴛ ꜰʟᴏᴡ").color(FDefaults.PURPLE)).appendSpace().append(edgeDot).appendNewline(), Component.space());
+
+        if (!Flobby.getInstance().motdIngame.isBlank()) player.sendMessage(FUtils.asMini(Flobby.getInstance().motdIngame));
     }
 
     @EventHandler
@@ -155,5 +158,10 @@ public class Echo implements Listener {
         }
 
         if (e.hasBlock() && e.getClickedBlock() != null && cantModify(p)) e.setCancelled(true);
+    }
+
+    @EventHandler
+    public void motd(PaperServerListPingEvent e) {
+        if (!Flobby.getInstance().motd.isBlank()) e.motd(FUtils.asMini(Flobby.getInstance().motd));
     }
 }
