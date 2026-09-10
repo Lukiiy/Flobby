@@ -140,6 +140,7 @@ public final class Flobby extends JavaPlugin implements BaseLobby {
             oldP.playerListName(oldP.displayName());
             Bukkit.broadcast(Component.empty().append(LEADER_PREFIX).append(Component.text(" Leadership has been transferred to ").color(FDefaults.LIME)).append(player.displayName().color(FDefaults.LIGHT_YELLOW)));
             oldP.getInventory().remove(Item.HOST_ITEM);
+            oldP.updateCommands();
         }
 
         Flow.getInstance().setLeader(new FlowPlayer(player));
@@ -148,6 +149,7 @@ public final class Flobby extends JavaPlugin implements BaseLobby {
         if (player.getWorld() == getWorld()) player.getInventory().addItem(Item.HOST_ITEM);
 
         player.playerListName(Component.empty().append(LEADER_PREFIX).appendSpace().append(player.displayName()));
+        player.updateCommands();
     }
 
     public void setLeaderRandom() {
