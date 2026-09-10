@@ -35,7 +35,7 @@ public class Echo implements Listener {
     private boolean cantModify(Player player) {
         if (!isLobby(player.getWorld())) return false;
 
-        return !(player.hasPermission(MODIFY_PERMISSION) && player.getGameMode() == GameMode.CREATIVE);
+        return !(player.hasPermission(MODIFY_PERMISSION) && Flobby.getInstance().modifying.contains(player.getUniqueId()));
     }
 
     private boolean isLobby(World world) {

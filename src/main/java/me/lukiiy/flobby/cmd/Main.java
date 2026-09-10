@@ -11,6 +11,8 @@ import me.lukiiy.flow.FDefaults;
 import net.kyori.adventure.text.Component;
 import org.bukkit.entity.Player;
 
+import java.util.UUID;
+
 public class Main {
     private static final LiteralArgumentBuilder<CommandSourceStack> main = Commands.literal("lobby")
             .executes(it -> {
@@ -91,7 +93,23 @@ public class Main {
                 return Command.SINGLE_SUCCESS;
             });
 
+    private static final LiteralArgumentBuilder<CommandSourceStack> modify = Commands.literal("modify")
+            .requires(it -> it.getSender().hasPermission("flobby.modify") && it instanceof Player)
+            .executes(it -> {
+                Player player = (Player) it.getSource().getSender();
+                UUID uuid = player.getUniqueId();
+
+                if (Flobby.getInstance().modifying.remove(uuid)) {
+                    player.sendMessage(FDefaults.success(Component.text("You can no longer modify the lobby!")));
+                } else {
+                    Flobby.getInstance().modifying.add(uuid);
+                    player.sendMessage(FDefaults.success(Component.text("You will now modify the lobby!")));
+                }
+
+                return Command.SINGLE_SUCCESS;
+            });
+
     public static LiteralCommandNode<CommandSourceStack> register() {
-        return main.then(setPos).then(setBoostY).then(setCutOffRadius).then(setBoostYForce).then(reload).build();
+        return main.then(setPos).then(setBoostY).then(setCutOffRadius).then(setBoostYForce).then(reload).then(modify).build();
     }
 }

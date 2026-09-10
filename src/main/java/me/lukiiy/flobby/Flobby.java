@@ -13,8 +13,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.Nullable;
 import org.jspecify.annotations.NonNull;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ThreadLocalRandom;
 
 public final class Flobby extends JavaPlugin implements BaseLobby {
@@ -24,6 +24,8 @@ public final class Flobby extends JavaPlugin implements BaseLobby {
     private double boostYForce;
 
     public static final Component LEADER_PREFIX = Component.text("⭐").color(FDefaults.LIGHT_YELLOW);
+
+    public final Set<UUID> modifying = ConcurrentHashMap.newKeySet();
 
     @Override
     public void onEnable() {
