@@ -229,7 +229,7 @@ public class MenuCUI {
 
         return switch (setting) {
             case BooleanSetting _ -> base.appendSpace().append(button("Toggle", ROOT + " setting " + setting.getId() + " toggle", FDefaults.GREEN));
-            case DoubleSetting _ -> base.appendSpace().append(button("-", ROOT + " setting " + setting.getId() + " dec", FDefaults.RED)).appendSpace().append(button("+", ROOT + " setting " + setting.getId() + " inc", FDefaults.GREEN));
+            case DoubleSetting _ -> base.appendSpace().append(button("-", ROOT + " setting " + setting.getId() + " -", FDefaults.RED)).appendSpace().append(button("+", ROOT + " setting " + setting.getId() + " +", FDefaults.GREEN));
             case CycleSetting<?> _ -> base.appendSpace().append(button("<", ROOT + " setting " + setting.getId() + " prev", FDefaults.ORANGE)).appendSpace().append(button(">", ROOT + " setting " + setting.getId() + " next", FDefaults.ORANGE));
             default -> base;
         };
