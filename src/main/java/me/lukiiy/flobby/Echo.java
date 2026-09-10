@@ -4,7 +4,9 @@ import com.destroystokyo.paper.event.server.PaperServerListPingEvent;
 import me.lukiiy.flobby.cmd.MenuCUI;
 import me.lukiiy.flow.*;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.TextReplacementConfig;
 import org.bukkit.*;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -63,7 +65,8 @@ public class Echo implements Listener {
 
         player.sendPlayerListHeaderAndFooter(Component.newline().append(edgeDot).appendSpace().append(Component.text("ᴘʀᴏᴊᴇᴄᴛ ꜰʟᴏᴡ").color(FDefaults.PURPLE)).appendSpace().append(edgeDot).appendNewline(), Component.space());
 
-        if (!Flobby.getInstance().motdIngame.isBlank()) player.sendMessage(FUtils.asMini(Flobby.getInstance().motdIngame));
+        String motd = Flobby.getInstance().getConfig().getString("joinMotd", "");
+        if (!motd.isBlank()) player.sendMessage(FDefaults.Ripple.deserialize(motd));
     }
 
     @EventHandler
@@ -162,6 +165,13 @@ public class Echo implements Listener {
 
     @EventHandler
     public void motd(PaperServerListPingEvent e) {
-        if (!Flobby.getInstance().motd.isBlank()) e.motd(FUtils.asMini(Flobby.getInstance().motd));
+        FileConfiguration config = Flow.getInstance().getConfig();
+        GameEntry entry = Flow.getInstance().getManager().getCurrent();
+
+        if (entry == null) {
+            e.motd(FDefaults.Ripple.deserialize(config.getString("motd", "")));
+        } else {
+            e.motd(FDefaults.Ripple.deserialize(config.getString("motdIngame", "")).replaceText(TextReplacementConfig.builder().matchLiteral("%m").replacement(entry.displayName()).build()));
+        }
     }
 }
